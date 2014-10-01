@@ -83,16 +83,14 @@ public class dali_decoder extends Thread {
     }     
     public static String decodeCommand(String command) throws Exception {
     	//Nimmt die einzelnen Befehle auseinander und wandelt sie in einen Lesbaren Befehl um
-    	char[] cmd = "".toCharArray();
+    	char[] cmd = "".toCharArray();	//
     	if(command.length() != 0){
     		cmd = command.toCharArray();
     	}else{
     		return "";
     	}
     	int strlen = 	command.length();
-    	String answer = "";	
-    	
-    	
+    	String answer = "";		
     	if(cmd[0] == 83 && cmd[strlen-1] == 69){
     		if(command.contains(" ") == false){
     			command = command.substring(0,command.length()-1);
@@ -111,13 +109,13 @@ public class dali_decoder extends Thread {
     			
     			
     			if(igrp == 254){
-    				answer = "DIRECT ARC POWER "+icom;
+    				answer = "DIRECT ARC POWER "+icom;			//Direct arc power 
     			}
     			else{
     				try{
-    					answer = COMMANDS[icom];
+    					answer = COMMANDS[icom];				//holt den befehl
     				}catch(Exception e){
-    					System.out.println(e);
+    					System.out.println(e);					//print error
     					answer = "ERROR no such command: "+e;
     				}
     			}			
@@ -129,8 +127,7 @@ public class dali_decoder extends Thread {
        igrp = set_igrp;
        String answer = "";
        igrp = igrp/2;
-       answer = GROUPS[igrp];
-       
+       answer = GROUPS[igrp];       
        return answer;
     }
     public static int getigrp(){

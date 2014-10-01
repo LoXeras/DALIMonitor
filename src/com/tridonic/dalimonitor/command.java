@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -27,6 +27,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -192,6 +194,8 @@ public class command extends Activity {
 			//beginn listening or data write something 			
 		}	
 	}
+	
+	
 	//******************************************************/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,7 +204,7 @@ public class command extends Activity {
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.command_actions, menu);	
-	    return super.onCreateOptionsMenu(menu);	    
+	    return super.onCreateOptionsMenu(menu);
 	}
 	/***********************************/
 	public static void itemadder(String content, boolean time){
@@ -244,9 +248,7 @@ public class command extends Activity {
 
 	//    return super.onKeyDown(keycode, e);
 	//}
-	/*********************************/	
-	
-	
+	/*********************************/		
 	/////////////////////////////////////////////
 	//Listens to open file dialog and saves the choosen path
 	//////////////////////////////////////
@@ -302,10 +304,8 @@ public class command extends Activity {
 	            return super.onOptionsItemSelected(item);		//Return selected item
 	    }
 	}	
-	
-	
-	
-	private void LoadFile() {
+		
+	public void LoadFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		Intent intent = new Intent(this, FileChooserActivity.class);
 		intent.putExtra(FileChooserActivity.INPUT_REGEX_FILTER, ".*dmf");
@@ -313,7 +313,7 @@ public class command extends Activity {
 	    this.startActivityForResult(intent, 0);
 					
 	}
-	private void loadhandler(){		
+	public void loadhandler(){		
 		clearlist(); 
 		String[] splitpath =  filePath.split("¦");
         try{
@@ -333,7 +333,7 @@ public class command extends Activity {
             }
 	}
 
-	private void AutoScroll() {
+	public void AutoScroll() {
 		//Handles Auto scroll Option
 		pause = !pause; 
     	Resources res = getResources();
@@ -356,14 +356,53 @@ public class command extends Activity {
 		//Intent intent = new Intent(this, FileChooserActivity.class);
     	//intent.putExtra(FileChooserActivity.INPUT_FOLDER_MODE, true);
         //this.startActivityForResult(intent, 0);
-    	String content = "";    	
-    	for(String s : message_list){			//Reads out the items from the List
-    		content += s + "\n";	   			//Create the content     		
-    	}
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);	//new alert
+    	alert.setTitle("Enter Filename");
+    	alert.setMessage("Enter a file name!");
+    	// Set an EditText view to get user input 
+    	final EditText input = new EditText(this);
+    	alert.setView(input);
+    	alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+    	public void onClick(DialogInterface dialog, int whichButton) {
+    		String value = input.getText().toString();    	  
+    		String content = "";    	
+      		for(String s : message_list){			//Reads out the items from the List
+      			content += s + "\n";	   			//Create the content     		
+      		}	       		
+      		// Do something with value!
+      		file_writer.writeFile(content,value);	//Writes the File
+      		itemadder("File saved as: "+value+".dmf",true);
+    	 }
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    	  public void onClick(DialogInterface dialog, int whichButton) {
+    	    itemadder("Saving file aborded cause of user.",true);
+    	  }
+    	});
+
+    	alert.show();
     	
-    	file_writer.writeFile(content,"ww");	//Writes the File
-   
-	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
 	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -374,7 +413,6 @@ public class command extends Activity {
 	
 	//listens for incomming data in the in stream!
 	public void beginListenForData(){
-		Toast.makeText(getApplicationContext(),"listen for data",Toast.LENGTH_LONG).show();
 		Thread receiveThread = new Thread(){
 	        public void run(){
 	        	try {	            	
@@ -396,7 +434,7 @@ public class command extends Activity {
 	    		        		//String receivedString = new String(receiveBuffer);	//Create buffer	    		        			
 	    		        		String receivedString = new String(x);
 	    		        		if(receivedString == ""){
-	    		        			receivedString = "Error 231";
+	    		        			receivedString = "Error string empty";
 	    		        		}
 	    		        		receivedString = receivedString.trim();
 	    		        		bundle.putString("answer", receivedString);	//Put the answers in a Bundle
@@ -405,12 +443,6 @@ public class command extends Activity {
 	    		                receiveBuffer = new byte[BUFFER_SIZE];
 	                		}
 	                	}
-	                	
-	                	try{
-	                		//sleep(10);
-    	        		}catch (Exception e) {
-    	        			Toast.makeText(getApplicationContext(),"Error:" + e.getMessage() + ".",Toast.LENGTH_LONG).show();
-    	        		}
 	                }
 	            }catch (Exception e) {
 	                if (isClosing)

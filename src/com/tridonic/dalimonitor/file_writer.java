@@ -31,9 +31,10 @@ public class file_writer extends Thread {
         void onDisconnected();
         void onError(IOException e);
     }    
-    public static void writeFile(String content, String path){   
+    public static void writeFile(String content, String name){   
     	 Calendar cal = new GregorianCalendar();
-    	 String filename="¦monitor_log_"+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR);
+    	 //String filename="¦monitor_log_"+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR);
+    	 String filename = "¦"+name;
     	 //String filename="test";
          String data=content.toString();
          FileOutputStream fos;           
