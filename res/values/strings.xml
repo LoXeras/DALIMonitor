@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DALI Monitor</string>
+    <string name="action_settings">Settings</string>
+	<string name = "connect">Connect</string>
+	<string name = "show_devices">Show Devices </string>
+	<string name="List">List Devices</string>
+	<string name="connect2index">0</string>
+	<string name ="action_clear">CLEAR</string>
+	<string name ="action_info">Info</string>
+	<string name ="action_as">AS ON</string>
+	<string name ="notif_title">Listening on Bluetooth!</string>
+	<string name ="notif_text">FAIL</string>
+	<string name ="action_load">Load</string>
+	<string name ="action_save">Save</string>
+</resources>
