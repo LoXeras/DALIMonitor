@@ -3,7 +3,7 @@ package com.tridonic.dalimonitor;
 //design: 	command.xml
 //date:		22.05.14
 //(c) 2014 by Dario Duff
-//Connects to the bloetooth device that was selected in the main Activity, Displays the incomming messages from Bluetoth Device.
+//Displays the incomming messages from Bluetoth Device.
 ////////////////////////////////////////////////////////////////////////////////
 
 import java.io.BufferedReader;
@@ -85,46 +85,6 @@ public class command extends Activity {
 	 public static String filePath = "";
 	 ArrayList<String> message_list = new ArrayList<String>();
 	 
-	 public static final String[] COMMANDS = {
-			/*0-9*/			"OFF","UP","DOWN","STEP UP","STEP DOWN","RECALL MAX LEVEL","RECALL MIN LEVEL","STEP DOWN AND OFF","ON AND STEP UP","ENABLE DAPC SEQUENCE",
-			/*10*15*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*16-24*/		"GOTO SCENE 0","GOTO SCENE 1","GOTO SCENE 2","GOTO SCENE 3","GOTO SCENE 4","GOTO SCENE 5","GOTO SCENE 6","GOTO SCENE 7","GOTO SCENE 8",
-			/*25-31*/		"GOTO SCENE 9","GOTO SCENE 10","GOTO SCENE 11","GOTO SCENE 12","GOTO SCENE 13","GOTO SCENE 14","GOTO SCENE 15",
-			/*32-33*/		"RESET","STORE ACTUAL LEVELI N DTR",
-			/*34-41*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*42-45*/		"STORE DTR AS MAX LEVEL","STORE DTR AS MIN LEVEL","STORE DTR AS SYSTEM FAIL LEVEL","STORE DTR AS POWER ON LEVEL",
-			/*46-47*/		"STORE DTR AS FADE TIME","STORE DTR AS FADE RATE",
-			/*48-63*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*64-69*/		"STORE DTR AS SCENE 0","STORE DTR AS SCENE 1","STORE DTR AS SCENE 2","STORE DTR AS SCENE 3","STORE DTR AS SCENE 4","STORE DTR AS SCENE 5",
-			/*70-75*/		"STORE DTR AS SCENE 6","STORE DTR AS SCENE 7","STORE DTR AS SCENE 8","STORE DTR AS SCENE 9","STORE DTR AS SCENE 10","STORE DTR AS SCENE 11",
-			/*76-79*/		"STORE DTR AS SCENE 12","STORE DTR AS SCENE 13","STORE DTR AS SCENE 14","STORE DTR AS SCENE 15",
-			/*80-86*/		"REMOVE FROM SCENE 0","REMOVE FROM SCENE 1","REMOVE FROM SCENE 2","REMOVE FROM SCENE 3","REMOVE FROM SCENE 4","REMOVE FROM SCENE 5","REMOVE FROM SCENE 6",
-			/*87-93*/		"REMOVE FROM SCENE 7","REMOVE FROM SCENE 8","REMOVE FROM SCENE 9","REMOVE FROM SCENE 10","REMOVE FROM SCENE 11","REMOVE FROM SCENE 12","REMOVE FROM SCENE 13",
-			/*94-95*/		"REMOVE FROM SCENE 14","REMOVE FROM SCENE 15",
-			/*96-104*/		"ADD TO GROUP 0","ADD TO GROUP 1","ADD TO GROUP 2","ADD TO GROUP 3","ADD TO GROUP 4","ADD TO GROUP 5","ADD TO GROUP 6","ADD TO GROUP 7","ADD TO GROUP 8",
-			/*105-111*/		"ADD TO GROUP 9","ADD TO GROUP 10","ADD TO GROUP 11","ADD TO GROUP 12","ADD TO GROUP 13","ADD TO GROUP 14","ADD TO GROUP 15",
-			/*112-118*/		"REMOVE FROM GROUP 0","REMOVE FROM GROUP 1","REMOVE FROM GROUP 2","REMOVE FROM GROUP 3","REMOVE FROM GROUP 4","REMOVE FROM GROUP 5","REMOVE FROM GROUP 6",
-			/*119-125*/		"REMOVE FROM GROUP 7","REMOVE FROM GROUP 8","REMOVE FROM GROUP 9","REMOVE FROM GROUP 10","REMOVE FROM GROUP 11","REMOVE FROM GROUP 12","REMOVE FROM GROUP 13",
-			/*126-127*/		"REMOVE FROM GROUP 14","REMOVE FROM GROUP 15",
-			/*128*/			"STORE DTR AS SHORT ADDRESS",
-			/*129-143*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*144-150*/		"QUERY STATUS","QUERY CONTROL GEAR","QUERY LAMP FAIL", "QUERY LAMP POWER ON", "QUERY LIMIT ERROR","QUERY RESET state","QUERY MISSING SHORT ADDRESS",
-			/*151-157*/		"QUERY VERSION NUMBER","QUERY CONTENT DTR","QUERY DEVICE TYPE","QUERY PHYSICAL MINIMUM LEVEL","QUERY POWER FAIL","QUERY CONTENT DTR1","QUERY CONTENT DTR2",
-			/*158-159*/		"NO COM","NO COM",
-			/*160-165*/		"query actual level","QUERY MAX LEVEL","QUERY MIN LEVEL","QUERY POWER ON LEVEL","QUERY SYSTEM FAIL LEVEL","QUERY FADE TIME/FADE RATE",
-			/*166-175*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*176-182*/		"QUERY SCENE LEVEL 0","QUERY SCENE LEVEL 1","QUERY SCENE LEVEL 2","QUERY SCENE LEVEL 3","QUERY SCENE LEVEL 4","QUERY SCENE LEVEL 5","QUERY SCENE LEVEL 6",
-			/*182-189*/		"QUERY SCENE LEVEL 7","QUERY SCENE LEVEL 8","QUERY SCENE LEVEL 9","QUERY SCENE LEVEL 10","QUERY SCENE LEVEL 11","QUERY SCENE LEVEL 12","QUERY SCENE LEVEL 13",
-			/*190-191*/		"QUERY SCENE LEVEL 14","QUERY SCENE LEVEL 15",
-			/*192-197*/		"QUERY GROUPS 0-1","QUERY GROUPS 8-15","QUERY RANDOM ADDRESS (H)","QUERY RANDOM ADDRESS (M)","QUERY RANDOM ADDRESS (l)","READ MEMORY LOCATION",
-			/*198-*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*223*/			"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-			/*224*/			"QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT",
-			/*-*/			"QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT",
-							"QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT",
-			/*254*/			"QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT",
-			/*255*/			"QUERY EXTENDED VERSION NUMBER"
-							};
 	 
 	 
 	 private InputStream inStream = null;
@@ -317,7 +277,9 @@ public class command extends Activity {
 		alertDialog.setTitle("Info");
 		alertDialog.setMessage("Device: "+Build.MANUFACTURER + " "+ Build.MODEL+"\nAndroid Version: "+android.os.Build.VERSION.RELEASE+"\nApp Version: v1.0.8\n\n(c) 2014 by Dario Duff(LoXeras Dev.)");
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int which) {//DO SOMETHING}
+		public void onClick(DialogInterface dialog, int which) {//DO SOMETHING
+			
+		}
 		});
 		alertDialog.setIcon(R.drawable.ic_action_help);
 		alertDialog.show();
@@ -325,7 +287,7 @@ public class command extends Activity {
 	}
 
 
-	public void LoadFile() {
+	private void LoadFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		Intent intent = new Intent(this, FileChooserActivity.class);
 		intent.putExtra(FileChooserActivity.INPUT_REGEX_FILTER, ".*dmf");
@@ -333,7 +295,7 @@ public class command extends Activity {
 	    this.startActivityForResult(intent, 0);
 					
 	}
-	public void loadhandler(){		
+	private void loadhandler(){		
 		clearlist(); 
 		String[] splitpath =  filePath.split("¦");
         try{
@@ -353,7 +315,7 @@ public class command extends Activity {
             }
 	}
 
-	public void AutoScroll() {
+	private void AutoScroll() {
 		//Handles Auto scroll Option
 		pause = !pause; 
     	Resources res = getResources();

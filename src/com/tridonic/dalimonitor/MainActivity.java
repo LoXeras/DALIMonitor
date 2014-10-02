@@ -37,11 +37,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity {	
 	private BluetoothAdapter btAdapter = null;
 	private Set<BluetoothDevice>pairedDevices;
-	private BluetoothDevice device = null;
 	private BluetoothSocket btSocket;
 	private OutputStream outStream;
-	private InputStream inStream;
-	
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private ArrayList address = null;
 	private ListView lv;
@@ -116,7 +113,7 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item); 	
 	}
 	//Called when devices should be show
-	public void list(View view){
+	public void create_list(View view){
 		pairedDevices = btAdapter.getBondedDevices();
 		
 		ArrayList list = new ArrayList();
