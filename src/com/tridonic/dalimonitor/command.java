@@ -30,12 +30,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.text.Editable;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -299,12 +300,31 @@ public class command extends Activity {
 	           return true;
 	      //  case R.id.action_load:
 	        //	return true;  
+	           
+	        case R.id.action_info:
+	        	showInfo();
+	        	return true;
 	        
 	        default:
 	            return super.onOptionsItemSelected(item);		//Return selected item
 	    }
 	}	
 		
+	private void showInfo() {
+		//Shof infos about the device and the app version.
+		final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setTitle("Info");
+		alertDialog.setMessage("Device: "+Build.MANUFACTURER + " "+ Build.MODEL+"\nAndroid Version: "+android.os.Build.VERSION.RELEASE+"\nApp Version: v1.0.8\n\n(c) 2014 by Dario Duff(LoXeras Dev.)");
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int which) {//DO SOMETHING}
+		});
+		alertDialog.setIcon(R.drawable.ic_action_help);
+		alertDialog.show();
+		
+	}
+
+
 	public void LoadFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		Intent intent = new Intent(this, FileChooserActivity.class);
@@ -368,8 +388,7 @@ public class command extends Activity {
     		String content = "";    	
       		for(String s : message_list){			//Reads out the items from the List
       			content += s + "\n";	   			//Create the content     		
-      		}	       		
-      		// Do something with value!
+      		}
       		file_writer.writeFile(content,value);	//Writes the File
       		itemadder("File saved as: "+value+".dmf",true);
     	 }
@@ -381,28 +400,7 @@ public class command extends Activity {
     	  }
     	});
 
-    	alert.show();
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	alert.show();    	
 	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

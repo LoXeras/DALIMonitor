@@ -34,13 +34,14 @@ public final class R {
         public static final int folder=0x7f020003;
         public static final int ic_action_bluetooth_connected=0x7f020004;
         public static final int ic_action_delete=0x7f020005;
-        public static final int ic_action_pause=0x7f020006;
-        public static final int ic_action_play=0x7f020007;
-        public static final int ic_action_remove=0x7f020008;
-        public static final int ic_launcher=0x7f020009;
-        public static final int ic_launcher1=0x7f02000a;
-        public static final int no=0x7f02000b;
-        public static final int tick=0x7f02000c;
+        public static final int ic_action_help=0x7f020006;
+        public static final int ic_action_pause=0x7f020007;
+        public static final int ic_action_play=0x7f020008;
+        public static final int ic_action_remove=0x7f020009;
+        public static final int ic_launcher=0x7f02000a;
+        public static final int ic_launcher1=0x7f02000b;
+        public static final int no=0x7f02000c;
+        public static final int tick=0x7f02000d;
     }
     public static final class id {
         public static final int action_as=0x7f09000c;
