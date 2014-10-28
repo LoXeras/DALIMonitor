@@ -46,31 +46,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ar.com.daidalos.afiledialog.FileChooserActivity;
 
-public class command extends Activity {	
-	
-	
-	public static String endsave;
-	public static String beginsave;
-	public static boolean success = true;
-	
-	
+public class command extends Activity {
+	public static boolean success = true;	
 	private static final int BUFFER_SIZE = 4096;
     private boolean isClosing;
-    public byte[] receiveBuffer = new byte[BUFFER_SIZE];
-    	
-	private int mState = 3;
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    
-    private BluetoothAdapter btAdapter = null;
-	private Set<BluetoothDevice>pairedDevices;
-	private BluetoothDevice device = null;
+    public byte[] receiveBuffer = new byte[BUFFER_SIZE];    	
+	private int mState = 3;    
 	private BluetoothSocket btSocket;
-	public static boolean scroll = true;
-	
-	 //private InputStream inStream;
-	 private static EditText intext;
-	 
-	
+	public static boolean scroll = true;	
 	 public static final int STATE_NONE = 0;          // we're doing nothing
 	 public static final int STATE_LISTEN = 1;        //  listening for incoming connections
 	 public static final int STATE_CONNECTING = 2;    //  initiating an outgoing connection
@@ -83,22 +66,19 @@ public class command extends Activity {
 	 private Menu menu;
 	 public static int igrp;
 	 public static String filePath = "";
-	 ArrayList<String> message_list = new ArrayList<String>();
-	 
-	 
-	 
+	 ArrayList<String> message_list = new ArrayList<String>(); 
 	 private InputStream inStream = null;
-	 byte[] readBuffer = new byte[1024];
+	 byte[] readBuffer = new byte[1024];		//Lese Buffer
 	 static  Handler handler = new Handler(){
 			  @Override
 			  public void handleMessage(Message msg){
 				  Bundle bundle = msg.getData();
-				  String string = bundle.getString("answer");				 
-				  String content = string;
-				  String result = "";
+				  String string = bundle.getString("answer");				 	//Holt msg aus dem Bundle
+				  String content = string;			
+				  String result = "";											
 				  if(content != ""){
 					  result = content;
-					  if(content.contains("Error") == false){
+					  if(content.contains("Error") == false){					//Nur wenn fehlerlos ausgeben
 						  try {
 							result = dali_decoder.decodeCommand(content);
 							igrp = dali_decoder.getigrp();
@@ -113,8 +93,8 @@ public class command extends Activity {
 					 itemadder(result,true);
 				  }
 			  }
-	 	};	 
-	 
+	 	};
+	 	
 	 // Callback interface for selected directory
 	 	public interface ChosenDirectoryListener{   
 	 		public void onChosenDir(String chosenDir);
@@ -146,12 +126,12 @@ public class command extends Activity {
 		BluetoothThread BluetoothThread;
 		BluetoothThread = MainActivity.get_thread();		
 	//	BluetoothThread.connect(message);
-		btSocket = BluetoothThread.get_connection();
+		btSocket = BluetoothThread.get_connection();		
 		if(success == true){
 			igrp = 0;
 			itemadder("Link established!",true);
 			itemadder("Start listening for Data.",true);
-			beginListenForData();//Connect to choosen device
+			beginListenForData();			//Begin to read imput stream
 			//beginn listening or data write something 			
 		}	
 	}
@@ -164,7 +144,7 @@ public class command extends Activity {
 		this.menu = menu;
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.command_actions, menu);	
+	    inflater.inflate(R.menu.command_actions, menu);			//Erstellt menu
 	    return super.onCreateOptionsMenu(menu);
 	}
 	/***********************************/
@@ -186,10 +166,10 @@ public class command extends Activity {
 		}
 		
 		if(time == true){
-			listAdapter.add(getCurrentTimeStamp() +":   " + grp + "\t\t\t" + content); 
+			listAdapter.add(getCurrentTimeStamp() +":   " + grp + "\t\t\t" + content); 		//Fügt Gruppe+Befehl hinzu. 
 		}
 		else{
-			listAdapter.add(content); 
+			listAdapter.add(content); //Keine Zeit angabe wird für das Laden von FIles verwendet
 		}
 		if (pause == false){
 			mainListView.setAdapter( listAdapter );
@@ -238,39 +218,8 @@ public class command extends Activity {
             	loadhandler();
             }
         }
-    }
-	
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	    	case R.id.action_load:
-	    		LoadFile();
-	    		return true;	    	  
-	        case R.id.action_clear:
-	        	clearlist();
-	            return true;
-	        case R.id.action_save:
-	        	SaveFile();
-	        	
-	            return true;	   
-	        case R.id.action_as: 	        	
-	        	AutoScroll();
-	           return true;
-	      //  case R.id.action_load:
-	        //	return true;  
-	           
-	        case R.id.action_info:
-	        	showInfo();
-	        	return true;
-	        
-	        default:
-	            return super.onOptionsItemSelected(item);		//Return selected item
-	    }
-	}	
-		
-	private void showInfo() {
+    }		
+	public void showInfo() {
 		//Shof infos about the device and the app version.
 		final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -287,7 +236,7 @@ public class command extends Activity {
 	}
 
 
-	private void LoadFile() {
+	public void LoadFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		Intent intent = new Intent(this, FileChooserActivity.class);
 		intent.putExtra(FileChooserActivity.INPUT_REGEX_FILTER, ".*dmf");
@@ -295,7 +244,7 @@ public class command extends Activity {
 	    this.startActivityForResult(intent, 0);
 					
 	}
-	private void loadhandler(){		
+	public void loadhandler(){		
 		clearlist(); 
 		String[] splitpath =  filePath.split("¦");
         try{
@@ -315,7 +264,7 @@ public class command extends Activity {
             }
 	}
 
-	private void AutoScroll() {
+	public void AutoScroll() {
 		//Handles Auto scroll Option
 		pause = !pause; 
     	Resources res = getResources();
@@ -326,14 +275,14 @@ public class command extends Activity {
     	}
 		
 	}
-	private void clearlist(){
+	public void clearlist(){
 		//Clear the List view.
 		igrp = 0;
     	listAdapter.clear();		//Delete Content in List
     	mainListView.setAdapter( listAdapter );	//Reload Adapter
     	itemadder("Data Cleared!",true);		
 	}
-	private void SaveFile() {
+	public void SaveFile() {
 		//Save the File in given folder
 		//Intent intent = new Intent(this, FileChooserActivity.class);
     	//intent.putExtra(FileChooserActivity.INPUT_FOLDER_MODE, true);
@@ -386,7 +335,7 @@ public class command extends Activity {
 	    		               int rBcurLength = 0;
 	    		               // Thread.sleep(30);	    		               
 	    		               String total = "";
-	    		               String x = "";	    		               
+	    		               String x = "";	    	
 	    		               BufferedReader r = new BufferedReader(new InputStreamReader(inStream));
 	    		               x = r.readLine();	                	
 	    		                Message msg = handler.obtainMessage();
@@ -420,8 +369,6 @@ public class command extends Activity {
 		return mytime;
 
 	}
-	
-	
 	public void notif(){
 		NotificationCompat.Builder mBuilder =
 	    new NotificationCompat.Builder(this)
@@ -440,12 +387,37 @@ public class command extends Activity {
 		stackBuilder.addParentStack(command.class);
 		//Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent =
-		    stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
 		NotificationManager mNotificationManager =
 		(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		//mId allows you to update the notification later on.
 		mNotificationManager.notify(123, mBuilder.build());
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+		//command co = new command();
+	    switch (item.getItemId()) {	
+	    	case R.id.action_load:
+	    		LoadFile();
+	    		return true;	    	  
+	        case R.id.action_clear:
+	        	clearlist();
+	            return true;	        case R.id.action_save:
+	        	SaveFile();	        	
+	            return true;	   
+	        case R.id.action_as: 	        	
+	        	AutoScroll();
+	           return true;	           
+	        case R.id.action_info:
+	        	showInfo();
+	        	return true;
+	        
+	        default:
+	            return super.onOptionsItemSelected(item);		//Return selected item
+	    }
+	}	
+	
 }

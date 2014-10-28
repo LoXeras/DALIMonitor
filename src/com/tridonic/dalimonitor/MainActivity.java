@@ -44,6 +44,7 @@ public class MainActivity extends Activity {
 	private ListView lv;
 	private EditText connect2index;
 	private Button bt_connect;
+
 	
 	public final static String EXTRA_MESSAGE = "com.tridonic.dalimonitor.MESSAGE";
 	private static BluetoothThread BluetoothThread = new BluetoothThread();     
@@ -52,9 +53,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		//Hide the Keyboard
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-	    
-	    
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);    
 	    
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -69,23 +68,20 @@ public class MainActivity extends Activity {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             finish();
             return;
-        }
-        
-        
+        }               
         if (!btAdapter.isEnabled()) {
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(turnOn, 0);
+			startActivityForResult(turnOn, 0);	
 		}
 
         connect2index = (EditText)findViewById(R.id.et_Connect2index);    
         bt_connect = (Button)findViewById(R.id.bt_connect); 
         bt_connect.setEnabled(false);
- 
+        
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
-		
+		/*
 		//SU Anfrage Testen
 		try {
 			Process root = Runtime.getRuntime().exec("su");
@@ -94,12 +90,13 @@ public class MainActivity extends Activity {
 			Toast.makeText(getApplicationContext(),"No super user rights on this Device!",Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
-		
+		*/
 		
 		//Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main, menu); 
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -115,7 +112,7 @@ public class MainActivity extends Activity {
 	//Called when devices should be show
 	public void create_list(View view){
 		pairedDevices = btAdapter.getBondedDevices();
-		
+		//hauhdauhasdas
 		ArrayList list = new ArrayList();
 		address = new ArrayList();
 		for(BluetoothDevice bt : pairedDevices){
@@ -134,7 +131,8 @@ public class MainActivity extends Activity {
 			  }
 			  
 			}); 
-	}      	
+	}  
+	
 	/////////////////////////////
 	//@desc:	Connect to a Device whos choosen from the list view-
 	//@param:	none
@@ -151,27 +149,9 @@ public class MainActivity extends Activity {
 		}
 		
 		index = Integer.parseInt(connect2index.getText().toString());
-		
-		/* 
-		device = btAdapter.getRemoteDevice(address.get(index).toString());	//Set device to connect
-		try {
-        	btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);        	
-        } catch (IOException e) {
-        	Toast.makeText(getApplicationContext(),"Socket listen() failed",Toast.LENGTH_LONG).show();
-        }			
-		btAdapter.cancelDiscovery();					//Cancel discovery for more battery life
-		btSocket.connect();         					//Connect to choosen device 
-	    Toast.makeText(getApplicationContext(),"Connection established, link established",Toast.LENGTH_LONG).show();
-	    outStream = btSocket.getOutputStream();
-	    byte[] msgBufferTermination = {0xA,0xD};
-	    byte[] msgBuffer = "text succssesfully transmitted".getBytes();   
-	    outStream.write(msgBuffer);
-	    outStream.write(msgBufferTermination); */
-		
-	
 		BluetoothThread.connect((String) address.get(index));
-	    Intent intent = new Intent(MainActivity.this, command.class);
-	    //String message = (String) address.get(index);
+	    Intent intent = new Intent(this.getApplicationContext(), com_tabhost.class);	//Opens command.class
+	   // String message = (String) address.get(index);
 	   // intent.putExtra(EXTRA_MESSAGE, message);
 	    
 	    //Open a new site to show incoming messages 
@@ -191,10 +171,6 @@ public class MainActivity extends Activity {
 	public void setPairedDevices(Set<BluetoothDevice> pairedDevices) {
 		this.pairedDevices = pairedDevices;
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
 	public static class PlaceholderFragment extends Fragment {
 		public PlaceholderFragment(){/*Nothing here*/}
 

@@ -9,6 +9,9 @@ package com.tridonic.dalimonitor;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TabHost;
 
@@ -19,6 +22,8 @@ import android.widget.TabHost;
 //Main form, allows to connect to Bluetooth device
 ////////////////////////////////////////////////////////////////////////////////
 public class tabhost extends TabActivity {
+	private Menu menu;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);

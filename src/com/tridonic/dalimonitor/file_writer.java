@@ -15,16 +15,6 @@ import java.util.GregorianCalendar;
 import android.util.Log;
 
 public class file_writer extends Thread {
-	
-	
-	  //Context c;
-	  //  public BluetoothThread(Context context){
-	  //       c= context;
-	  //   }
-	    
-	    //call with: 
-
-
     public static interface Listener {
         void onConnected();
         void onReceived(byte[] buffer, int length);

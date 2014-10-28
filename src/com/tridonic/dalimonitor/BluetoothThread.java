@@ -13,21 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class BluetoothThread extends Thread {
-	
-	
-	  //Context c;
-	  //  public BluetoothThread(Context context){
-	  //       c= context;
-	  //   }
-	    
-	    //call with: 
-    private Listener listener;
-    private static ListView mainListView ;
-	private static ArrayAdapter<String> listAdapter ;
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	  
 	private BluetoothAdapter btAdapter = null;
-	private Set<BluetoothDevice>pairedDevices;
 	private BluetoothDevice device = null;
 	private BluetoothSocket btSocket;
 
@@ -40,17 +28,14 @@ public class BluetoothThread extends Thread {
         void onDisconnected();
         void onError(IOException e);
     }    
-    public void connect(String SID){    	
-    	boolean success;		
- 		String message = SID;
+    public void connect(String MAC){    	
+    	String message = MAC;	//MAC address from BT device to connect
  	    //intext.setText(getCurrentTimeStamp());			//Read out the actual time of the system			
  		btAdapter = BluetoothAdapter.getDefaultAdapter();
  		try{
- 	    device = btAdapter.getRemoteDevice(message.toString());	//Set device to connect
+ 			device = btAdapter.getRemoteDevice(message.toString());	//Set device to connect
  		}
- 		catch(Exception e){
- 		//	Toast.makeText(c,""+e,Toast.LENGTH_LONG).show();
- 		}		
+ 		catch(Exception e){ 	}		
  		try {
          	btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);        	
          } catch (IOException e) {
@@ -58,9 +43,8 @@ public class BluetoothThread extends Thread {
          }			
  		btAdapter.cancelDiscovery();					//Cancel discovery for more battery life
  		try {
- 			btSocket.connect();	//
+ 			btSocket.connect();	//connect to BT Device
  		} catch (IOException e) {
- 			success = false;
  			//Toast.makeText(c,"connection failed",Toast.LENGTH_LONG).show();
  			e.printStackTrace();
  			while(true){
@@ -80,10 +64,11 @@ public class BluetoothThread extends Thread {
 				}
 	        	
 	        }
- 		};receiveThread.setDaemon(true);
- 		receiveThread.start();
+ 		};receiveThread.setDaemon(true);		//set receiveThread as deamon thread, deamon threads will not close
+ 		receiveThread.start();					//after activity change!
     }
     public BluetoothSocket get_connection(){
+    	//Get connection of BT socket
     	return btSocket;
     }
     

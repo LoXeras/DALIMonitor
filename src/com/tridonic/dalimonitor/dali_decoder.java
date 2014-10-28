@@ -22,7 +22,7 @@ import android.util.Log;
 
 public class dali_decoder extends Thread {
 	public static int igrp;
-	public static final String[] COMMANDS = {
+	private static final String[] COMMANDS = {
 		/*0-9*/			"OFF","UP","DOWN","STEP UP","STEP DOWN","RECALL MAX LEVEL","RECALL MIN LEVEL","STEP DOWN AND OFF","ON AND STEP UP","ENABLE DAPC SEQUENCE",
 		/*10*15*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
 		/*16-24*/		"GOTO SCENE 0","GOTO SCENE 1","GOTO SCENE 2","GOTO SCENE 3","GOTO SCENE 4","GOTO SCENE 5","GOTO SCENE 6","GOTO SCENE 7","GOTO SCENE 8",
@@ -50,7 +50,7 @@ public class dali_decoder extends Thread {
 		/*158-159*/		"NO COM","NO COM",
 		/*160-165*/		"query actual level","QUERY MAX LEVEL","QUERY MIN LEVEL","QUERY POWER ON LEVEL","QUERY SYSTEM FAIL LEVEL","QUERY FADE TIME/FADE RATE",
 		/*166-175*/		"NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM","NO COM",
-		/*176-182*/		"QUERY SCENE LEVEL 0","QUERY SCENE LEVEL 1","QUERY SCENE LEVEL 2","QUERY SCENE LEVEL 3","QUERY SCENE LEVEL 4","QUERY SCENE LEVEL 5","QUERY SCENE LEVEL 6",
+		/*176-182*/		"QUERY SCENE LEVEL 0","QUERY SCENE LEVEL 1","QUERY SCENE LEVE L 2","QUERY SCENE LEVEL 3","QUERY SCENE LEVEL 4","QUERY SCENE LEVEL 5","QUERY SCENE LEVEL 6",
 		/*182-189*/		"QUERY SCENE LEVEL 7","QUERY SCENE LEVEL 8","QUERY SCENE LEVEL 9","QUERY SCENE LEVEL 10","QUERY SCENE LEVEL 11","QUERY SCENE LEVEL 12","QUERY SCENE LEVEL 13",
 		/*190-191*/		"QUERY SCENE LEVEL 14","QUERY SCENE LEVEL 15",
 		/*192-197*/		"QUERY GROUPS 0-1","QUERY GROUPS 8-15","QUERY RANDOM ADDRESS (H)","QUERY RANDOM ADDRESS (M)","QUERY RANDOM ADDRESS (l)","READ MEMORY LOCATION",
@@ -62,7 +62,7 @@ public class dali_decoder extends Thread {
 		/*254*/			"QUERY APP EXT","QUERY APP EXT","QUERY APP EXT","QUERY APP EXT",
 		/*255*/			"QUERY EXTENDED VERSION NUMBER"
 						};
-	public static final String[] GROUPS = {	
+	private static final String[] GROUPS = {	
 							"ADD 00","ADD 01","ADD 02","ADD 03","ADD 04","ADD 05","ADD 06","ADD 07","ADD 08","ADD 09",
 							"ADD 10","ADD 11","ADD 12","ADD 13","ADD 14","ADD 15","ADD 16","ADD 17","ADD 18","ADD 19",
 							"ADD 20","ADD 21","ADD 22","ADD 23","ADD 24","ADD 25","ADD 26","ADD 27","ADD 28","ADD 29",
@@ -73,7 +73,7 @@ public class dali_decoder extends Thread {
 							
 							"GRP 01","GRP 02","GRP 03","GRP 04","GRP 05","GRP 06","GRP 07","GRP 08","GRP 09","GRP 10",
 							"GRP 11","GRP 12","GRP 13","GRP 14","GRP 15"
-											};
+							};
 
     public static interface Listener {
         void onConnected();
@@ -81,11 +81,11 @@ public class dali_decoder extends Thread {
         void onDisconnected();
         void onError(IOException e);
     }     
-    public static String decodeCommand(String command) throws Exception {
+    public static String decodeCommand(String command) throws Exception{
     	//Nimmt die einzelnen Befehle auseinander und wandelt sie in einen Lesbaren Befehl um
     	char[] cmd = "".toCharArray();	//
     	if(command.length() != 0){
-    		cmd = command.toCharArray();
+    		cmd = command.toCharArray();		
     	}else{
     		return "";
     	}
@@ -103,7 +103,7 @@ public class dali_decoder extends Thread {
     			String com = seperated[1].substring(0,seperated[1].length()-1);	//Entfernt das "E"
     			String grp = seperated[0].replace('S', ' ');	//Entfernt das "S"
     			grp = grp.trim();								//Entfernt " "
-    			igrp = Integer.parseInt(grp);				//grp in int umwandeln
+    			igrp = Integer.parseInt(grp);					//grp in int umwandeln
     			int icom = Integer.parseInt(com);				//com in int umwandelnString fullstring = "";	
     			//Array for all the commands 
     			
@@ -114,7 +114,7 @@ public class dali_decoder extends Thread {
     			else{
     				try{
     					answer = COMMANDS[icom];				//holt den befehl
-    				}catch(Exception e){
+    				}catch(Exception e){						//scatch
     					System.out.println(e);					//print error
     					answer = "ERROR no such command: "+e;
     				}
