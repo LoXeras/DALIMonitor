@@ -116,10 +116,11 @@ public class dali_decoder extends Thread {
     					answer = COMMANDS[icom];				//holt den befehl
     				}catch(Exception e){						//scatch
     					System.out.println(e);					//print error
-    					answer = "ERROR no such command: "+e;
+    					answer = "ERROR no such command: "+e;	//Put error in answer 
     				}
     			}			
     		}
+    		//answer = "Answer: Command" + command;
     	}
     	return answer;
     }    

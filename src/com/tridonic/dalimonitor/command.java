@@ -46,7 +46,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ar.com.daidalos.afiledialog.FileChooserActivity;
 
-public class command extends Activity {
+	public class command extends Activity {
 	public static boolean success = true;	
 	private static final int BUFFER_SIZE = 4096;
     private boolean isClosing;
@@ -54,26 +54,26 @@ public class command extends Activity {
 	private int mState = 3;    
 	private BluetoothSocket btSocket;
 	public static boolean scroll = true;	
-	 public static final int STATE_NONE = 0;          // we're doing nothing
-	 public static final int STATE_LISTEN = 1;        //  listening for incoming connections
-	 public static final int STATE_CONNECTING = 2;    //  initiating an outgoing connection
-	 public static final int STATE_CONNECTED = 3;     //  connected to a remote device
-	 public static final int STATE_DISCONNECTED = 4;  //  disconnected from a remote device
-	 
-	 private static ListView mainListView ;
-	 private static ArrayAdapter<String> listAdapter ;
-	 public static boolean pause = false;
-	 private Menu menu;
-	 public static int igrp;
-	 public static String filePath = "";
-	 ArrayList<String> message_list = new ArrayList<String>(); 
-	 private InputStream inStream = null;
-	 byte[] readBuffer = new byte[1024];		//Lese Buffer
-	 static  Handler handler = new Handler(){
+	public static final int STATE_NONE = 0;          // we're doing nothing
+	public static final int STATE_LISTEN = 1;        //  listening for incoming connections
+	public static final int STATE_CONNECTING = 2;    //  initiating an outgoing connection
+	public static final int STATE_CONNECTED = 3;     //  connected to a remote device
+	public static final int STATE_DISCONNECTED = 4;  //  disconnected from a remote device
+	
+	private static ListView mainListView ;
+	private static ArrayAdapter<String> listAdapter ;
+	public static boolean pause = false;
+	private Menu menu;
+	public static int igrp;
+	public static String filePath = "";
+	ArrayList<String> message_list = new ArrayList<String>(); 
+	private InputStream inStream = null;
+	byte[] readBuffer = new byte[1024];		//Lese Buffer
+	static  Handler handler = new Handler(){
 			  @Override
 			  public void handleMessage(Message msg){
 				  Bundle bundle = msg.getData();
-				  String string = bundle.getString("answer");				 	//Holt msg aus dem Bundle
+				  String string = bundle.getString("answer");				 	//Holt msg aus dem Bundle 
 				  String content = string;			
 				  String result = "";											
 				  if(content != ""){
@@ -100,9 +100,10 @@ public class command extends Activity {
 	 		public void onChosenDir(String chosenDir);
 	 	}  	
 	 	
-	/** Called when the activity is first  . */ 
+	/** Called when the activity is first created  . */ 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {	
+		//wird Beim ersten start der activity aufgrufen
 		notif();
 		boolean success = true;
 		super.onCreate(savedInstanceState);
@@ -134,12 +135,12 @@ public class command extends Activity {
 			beginListenForData();			//Begin to read imput stream
 			//beginn listening or data write something 			
 		}	
-	}
-	
+	}	
 	
 	//******************************************************/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		//Wird beim ersten start aufgerufen und erstellt das menu
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		this.menu = menu;
 	    // Inflate the menu items for use in the action bar
@@ -154,9 +155,9 @@ public class command extends Activity {
 		//Return:	none
 		//String msg = "";
 		//msg = dali_encryptor(content);
-		
+		///Adds a new item to the actual list view. Refreshes
 		String grp = "B CAST";
-		if(content.contains("DIRECT ARC POWER") == false){
+		if(content.contains("DIRECT ARC POWER") == false){	//<---- DIRECT ARC POWER FUNKTION KONTROLLIEREN
 			try {
 				grp = dali_decoder.decodeGroup(igrp);
 			} catch (Exception e) {
@@ -171,24 +172,10 @@ public class command extends Activity {
 		else{
 			listAdapter.add(content); //Keine Zeit angabe wird für das Laden von FIles verwendet
 		}
-		if (pause == false){
-			mainListView.setAdapter( listAdapter );
-			mainListView.smoothScrollToPosition(listAdapter.getCount() - 1);	
-		}
+		if (pause == false){}
 		//secondListView.smoothScrollToPosition(listAdapter.getCount() - 1);
 	}
-	/************************************/
-	//When HW-button option is clicked
-	//@Override
-	//public boolean onKeyDown(int keycode, KeyEvent e) {
-	  //  switch(keycode) {
-	    //    case KeyEvent.KEYCODE_MENU:
-	      //  	Toast.makeText(getApplicationContext(),"BTN",Toast.LENGTH_LONG).show(); //Commen
-	        //    return true;
-	    //}
-
-	//    return super.onKeyDown(keycode, e);
-	//}
+	
 	/*********************************/		
 	/////////////////////////////////////////////
 	//Listens to open file dialog and saves the choosen path
@@ -196,6 +183,7 @@ public class command extends Activity {
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+        	
             boolean fileCreated = false;   
             Bundle bundle = data.getExtras();
             if(bundle != null){
@@ -213,19 +201,20 @@ public class command extends Activity {
             }
             itemadder("Selected Item: "+filePath.toString(),true);
             String message = fileCreated? "File created" : "File opened";
-            message += ": " + filePath;
+            message += ": " + filePath;	
             if(filePath != ""){
             	loadhandler();
             }
         }
     }		
+	@SuppressWarnings("deprecation")
 	public void showInfo() {
 		//Shof infos about the device and the app version.
-		final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE); 	//Create TelephonManager to read out manufacteur etc.
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create(); 		//Creates an alert dialogue
 		alertDialog.setTitle("Info");
 		alertDialog.setMessage("Device: "+Build.MANUFACTURER + " "+ Build.MODEL+"\nAndroid Version: "+android.os.Build.VERSION.RELEASE+"\nApp Version: v1.0.8\n\n(c) 2014 by Dario Duff(LoXeras Dev.)");
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() { //
 		public void onClick(DialogInterface dialog, int which) {//DO SOMETHING
 			
 		}
@@ -252,8 +241,8 @@ public class command extends Activity {
                InputStream fileIS = new FileInputStream(f);
                BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
                String readString = new String();
-               itemadder("Start importing File",true);
-               while((readString = buf.readLine())!= null){
+               itemadder("Start importing File",true);		//Adds message to list
+               while((readString = buf.readLine())!= null){	//Reads line from file
                   itemadder(readString,false);
                }
                itemadder("End of file",true);
@@ -263,9 +252,10 @@ public class command extends Activity {
                e.printStackTrace();
             }
 	}
-
 	public void AutoScroll() {
-		//Handles Auto scroll Option
+		//Handles Auto scroll Option 
+		//Wenn autoscroll aktiv ist geht das list view bei aktualisierung mit
+		//wennd eaktiviert bleibt das list view stehen
 		pause = !pause; 
     	Resources res = getResources();
     	if(!pause == true){	        		
@@ -341,11 +331,11 @@ public class command extends Activity {
 	    		                Message msg = handler.obtainMessage();
 	    		        		Bundle bundle = new Bundle();	    		        	
 	    		        		//String receivedString = new String(receiveBuffer);	//Create buffer	    		        			
-	    		        		String receivedString = new String(x);
-	    		        		if(receivedString == ""){
+	    		        		String receivedString = new String(x);		
+	    		        		if(receivedString == ""){	//Error handling
 	    		        			receivedString = "Error string empty";
 	    		        		}
-	    		        		receivedString = receivedString.trim();
+	    		        		receivedString = receivedString.trim();		//Delete all the spaces 
 	    		        		bundle.putString("answer", receivedString);	//Put the answers in a Bundle
 	    		                msg.setData(bundle);
 	    		                handler.sendMessage(msg);
@@ -394,7 +384,6 @@ public class command extends Activity {
 		//mId allows you to update the notification later on.
 		mNotificationManager.notify(123, mBuilder.build());
 	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items

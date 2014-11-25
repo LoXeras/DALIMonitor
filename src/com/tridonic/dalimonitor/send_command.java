@@ -1,5 +1,11 @@
 package com.tridonic.dalimonitor;
-
+//File: 	send_command.java
+//design: 	--
+//date:		4.11.14
+//(c) 2014 by Dario Duff
+//Ist für das senden von commands an das verbundene Bluetooth gerät zust$ndig.
+////////////////////////////////////////////////////////////////////////////////
+import java.io.IOException;
 import java.io.IOException;
 import java.io.OutputStream;
 

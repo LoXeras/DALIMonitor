@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		//Hide the Keyboard
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);    
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);     
 	    
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -68,15 +68,15 @@ public class MainActivity extends Activity {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             finish();
             return;
-        }               
+        }              
         if (!btAdapter.isEnabled()) {
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(turnOn, 0);	
 		}
 
-        connect2index = (EditText)findViewById(R.id.et_Connect2index);    
-        bt_connect = (Button)findViewById(R.id.bt_connect); 
-        bt_connect.setEnabled(false);
+        connect2index = (EditText)findViewById(R.id.et_Connect2index);    //Zu verbindendes Gerät
+        bt_connect = (Button)findViewById(R.id.bt_connect); 			
+        bt_connect.setEnabled(false);	
         
 	}
 	@Override
@@ -91,6 +91,7 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 		*/
+		
 		
 		//Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu); 
@@ -107,13 +108,15 @@ public class MainActivity extends Activity {
 		if (id == R.id.action_settings){
 			return true;
 		}
+		
 		return super.onOptionsItemSelected(item); 	
 	}
 	//Called when devices should be show
 	public void create_list(View view){
+		//Erstellt die lIste mit den MAC addressen und dem Gerätenamen
 		pairedDevices = btAdapter.getBondedDevices();
 		//hauhdauhasdas
-		ArrayList list = new ArrayList();
+		ArrayList list = new ArrayList();	
 		address = new ArrayList();
 		for(BluetoothDevice bt : pairedDevices){
 			list.add(bt.getName() + "  ["+ bt.getAddress() + "]");
@@ -126,9 +129,9 @@ public class MainActivity extends Activity {
 			  @Override
 			  public void onItemClick(AdapterView<?> parent, View view,
 			    int position, long id) {
-			    connect2index.setText(position+"");
-			    bt_connect.setEnabled(true);
-			  }
+				  	connect2index.setText(position+"");
+				  	bt_connect.setEnabled(true);
+			  	}
 			  
 			}); 
 	}  
@@ -150,7 +153,7 @@ public class MainActivity extends Activity {
 		
 		index = Integer.parseInt(connect2index.getText().toString());
 		BluetoothThread.connect((String) address.get(index));
-	    Intent intent = new Intent(this.getApplicationContext(), com_tabhost.class);	//Opens command.class
+	    Intent intent = new Intent(this.getApplicationContext(), command.class);	//Opens command.class
 	   // String message = (String) address.get(index);
 	   // intent.putExtra(EXTRA_MESSAGE, message);
 	    

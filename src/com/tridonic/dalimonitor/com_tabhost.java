@@ -23,6 +23,7 @@ import android.widget.TabHost;
 ////////////////////////////////////////////////////////////////////////////////
 public class com_tabhost extends TabActivity {
 	private Menu menu;
+	public static command co = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class com_tabhost extends TabActivity {
 	    mTabHost.addTab(mTabHost.newTabSpec("DALI Monitor").setIndicator("DALI Monitor").setContent(new Intent(this  ,command.class )));
 	    mTabHost.addTab(mTabHost.newTabSpec("Send").setIndicator("Light Controll").setContent(new Intent(this ,send.class )));
 	    mTabHost.setCurrentTab(0);
+	    
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,12 +46,11 @@ public class com_tabhost extends TabActivity {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.command_actions, menu);	
 	    return super.onCreateOptionsMenu(menu);
+	    
 	}
 	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		command co = new command();
-		co.onOptionsItemSelected(item);
-		return true;
+	public boolean onOptionsItemSelected(MenuItem item) {			
+		return co.onOptionsItemSelected(item);
 		
 	}
 	

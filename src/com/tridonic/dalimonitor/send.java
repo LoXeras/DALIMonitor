@@ -15,7 +15,6 @@ public class send extends Activity {
 	send_command send_command = new send_command();
 	public SeekBar seekbar;   
 	public Switch on_off;
-	
 	private int time_saver = getTime();
 	private int time_saver2 = 0;
 /** Called when the activity is first  . */ 
@@ -23,7 +22,7 @@ public class send extends Activity {
 	public void onCreate(Bundle savedInstanceState) {	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.send);
-		
+			
 		seekbar =(SeekBar) findViewById(R.id.seekBar1);
 		on_off 	=(Switch) findViewById(R.id.mainswitch);
 		
@@ -41,7 +40,6 @@ public class send extends Activity {
 		  }
 		 
 		  public void onStartTrackingTouch(SeekBar seekBar){}
-
 		  public void onStopTrackingTouch(SeekBar seekBar){}
 		  });
 		  
@@ -54,6 +52,7 @@ public class send extends Activity {
 				    } else {
 				        //Power off
 				    	command.send("255 0");
+				    	
 				    }
 			    }
 			});
