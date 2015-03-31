@@ -1,8 +1,6 @@
 package com.tridonic.dalimonitor;
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
+
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
